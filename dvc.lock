@@ -1,0 +1,160 @@
+schema: '2.0'
+stages:
+  preprocess:
+    cmd: python -m src.features.preprocess
+    deps:
+    - path: data/raw/ObesityDataSet_raw_and_data_sinthetic.csv
+      hash: md5
+      md5: aff636fcccdf0a24ed7186e48bad2548
+      size: 263646
+    - path: src/config.py
+      hash: md5
+      md5: d03cedb29ff7658e41649b991e79a034
+      size: 1375
+    - path: src/data/ingest.py
+      hash: md5
+      md5: a96eff0b8d8ffd495857aa18e0070a37
+      size: 404
+    - path: src/features/engineer.py
+      hash: md5
+      md5: e85da8a9dc3c0d0edc13c0d1d7abb1d2
+      size: 446
+    - path: src/features/preprocess.py
+      hash: md5
+      md5: e69e9ffadc134ff87b609921c72a8b84
+      size: 1922
+    params:
+      params.yaml:
+        data.random_state: 42
+        data.test_size: 0.2
+    outs:
+    - path: artifacts/models/pipeline.pkl
+      hash: md5
+      md5: 95785fb02ac7344205e13e836dd79373
+      size: 1588
+    - path: artifacts/preprocessing/feature_columns.json
+      hash: md5
+      md5: d6877f1bd5f4dd167a064c658779371e
+      size: 369
+    - path: data/processed/test_preprocessed.csv
+      hash: md5
+      md5: a882cafbfd1544ac7c9f56edf98d7225
+      size: 184171
+    - path: data/processed/train_preprocessed.csv
+      hash: md5
+      md5: 71a96ad61d1558a0d16a7b1e1ae7789a
+      size: 734759
+    - path: data/reference/training_reference.csv
+      hash: md5
+      md5: 71a96ad61d1558a0d16a7b1e1ae7789a
+      size: 734759
+  train:
+    cmd: python -m src.models.train
+    deps:
+    - path: data/processed/train_preprocessed.csv
+      hash: md5
+      md5: 71a96ad61d1558a0d16a7b1e1ae7789a
+      size: 734759
+    - path: src/config.py
+      hash: md5
+      md5: d03cedb29ff7658e41649b991e79a034
+      size: 1375
+    - path: src/models/train.py
+      hash: md5
+      md5: 6b91d51e1ad16d9a9886bb19b35b6fa3
+      size: 924
+    params:
+      params.yaml:
+        data.random_state: 42
+        model.max_depth:
+        model.min_samples_leaf: 1
+        model.min_samples_split: 2
+        model.n_estimators: 100
+    outs:
+    - path: artifacts/models/model.pkl
+      hash: md5
+      md5: ae03d9ee039b255feb1f6064022d4aed
+      size: 2116369
+  evaluate:
+    cmd: python -m src.models.evaluate
+    deps:
+    - path: artifacts/models/model.pkl
+      hash: md5
+      md5: ae03d9ee039b255feb1f6064022d4aed
+      size: 2116369
+    - path: data/processed/test_preprocessed.csv
+      hash: md5
+      md5: a882cafbfd1544ac7c9f56edf98d7225
+      size: 184171
+    - path: src/config.py
+      hash: md5
+      md5: d03cedb29ff7658e41649b991e79a034
+      size: 1375
+    - path: src/models/evaluate.py
+      hash: md5
+      md5: aad3486dca5238940701501ec599b8f9
+      size: 1317
+    params:
+      params.yaml:
+        model.performance_threshold: 0.95
+    outs:
+    - path: artifacts/metrics/evaluation_metrics.json
+      hash: md5
+      md5: 39bf586ae84568de1818357b87a225de
+      size: 85
+  train_mlp:
+    cmd: python -m src.models.train_mlp
+    deps:
+    - path: data/processed/train_preprocessed.csv
+      hash: md5
+      md5: 71a96ad61d1558a0d16a7b1e1ae7789a
+      size: 734759
+    - path: src/config.py
+      hash: md5
+      md5: d03cedb29ff7658e41649b991e79a034
+      size: 1375
+    - path: src/models/train_mlp.py
+      hash: md5
+      md5: 38abb5b2a6f080dcaab320b17dadd7da
+      size: 859
+    params:
+      params.yaml:
+        mlp.activation: relu
+        mlp.hidden_layer_sizes:
+        - 128
+        - 64
+        mlp.learning_rate_init: 0.001
+        mlp.max_iter: 500
+        mlp.random_state: 42
+    outs:
+    - path: artifacts/models/model_mlp.pkl
+      hash: md5
+      md5: 49d89e10700f77ab1522af9c8c54ad0f
+      size: 396573
+  evaluate_mlp:
+    cmd: python -m src.models.evaluate_mlp
+    deps:
+    - path: artifacts/models/model_mlp.pkl
+      hash: md5
+      md5: 49d89e10700f77ab1522af9c8c54ad0f
+      size: 396573
+    - path: data/processed/test_preprocessed.csv
+      hash: md5
+      md5: a882cafbfd1544ac7c9f56edf98d7225
+      size: 184171
+    - path: src/config.py
+      hash: md5
+      md5: d03cedb29ff7658e41649b991e79a034
+      size: 1375
+    - path: src/models/evaluate_mlp.py
+      hash: md5
+      md5: 6a85631e9a69f093529f258df0ae37b6
+      size: 1375
+    params:
+      params.yaml:
+        mlp.performance_threshold: 0.9
+    outs:
+    - path: artifacts/metrics/evaluation_metrics_mlp.json
+      hash: md5
+      md5: 3e3726166c855aadcdffab6d827072b5
+      size: 88

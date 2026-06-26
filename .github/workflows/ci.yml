@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main, dev]   # run CI only on branches that matter
+  pull_request:
+    branches: [main]        # run CI on PRs targeting main
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Lint with ruff
+        run: ruff check src/ app/ tests/
+
+      - name: Format check with black
+        run: black --check src/ app/ tests/
+
+      - name: Run DVC pipeline
+        run: dvc repro --no-run-cache
+
+      - name: Run tests
+        run: pytest -v --timeout=60

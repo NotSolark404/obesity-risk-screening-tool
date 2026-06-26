@@ -1,0 +1,1 @@
+["Gender", "Age", "Height", "Weight", "family_history_with_overweight", "FAVC", "FCVC", "NCP", "CAEC", "SMOKE", "CH2O", "SCC", "FAF", "TUE", "CALC", "BMI", "height_gender_interaction", "age_weight_interaction", "weight_height_ratio", "family_history_weight_risk", "MTRANS_Automobile", "MTRANS_Bike", "MTRANS_Motorbike", "MTRANS_Public_Transportation", "MTRANS_Walking"]

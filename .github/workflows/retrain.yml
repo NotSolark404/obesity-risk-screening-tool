@@ -1,0 +1,49 @@
+name: Retrain
+
+on:
+  push:
+    paths:
+      - "data/new_data/**"     # Trigger 1: new data pushed to this folder
+  schedule:
+    - cron: "0 9 * * 1"       # Trigger 2: every Monday at 9am UTC
+  workflow_dispatch:           # Trigger 3: manual button in GitHub Actions UI
+
+permissions:
+  contents: write
+
+jobs:
+  retrain:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run full DVC pipeline
+        run: dvc repro --no-run-cache
+        # dvc repro runs all 5 stages: preprocess → train → evaluate → train_mlp → evaluate_mlp
+        # evaluate and evaluate_mlp each call log_version() internally, so no separate step needed
+
+      - name: Run tests to validate retrained model
+        run: pytest -v --timeout=60
+
+      - name: Commit updated artifacts and version log
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add artifacts/metrics/evaluation_metrics.json
+          git add artifacts/metrics/evaluation_metrics_mlp.json
+          git add artifacts/metrics/model_version_log.csv
+          git add dvc.lock
+          git commit -m "model: auto-retrain $(date +'%Y-%m-%d') — triggered by ${{ github.event_name }} [skip ci]" || echo "nothing to commit"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

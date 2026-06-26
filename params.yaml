@@ -1,0 +1,21 @@
+data:
+  raw_path: data/raw/ObesityDataSet_raw_and_data_sinthetic.csv
+  test_size: 0.2
+  random_state: 42
+
+model:
+  n_estimators: 100
+  max_depth: null
+  min_samples_split: 2
+  min_samples_leaf: 1
+  performance_threshold: 0.95
+
+monitoring:
+  drift_threshold: 0.05
+mlp:
+  hidden_layer_sizes: [128, 64]
+  activation: relu
+  max_iter: 500
+  random_state: 42
+  learning_rate_init: 0.001
+  performance_threshold: 0.90

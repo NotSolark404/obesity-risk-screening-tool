@@ -1,0 +1,10 @@
+version,datetime,model_type,accuracy,f1_weighted
+v1.1,2026-06-13 15:22,RandomForestClassifier,0.988,0.988
+v1.2,2026-06-13 15:24,RandomForestClassifier,0.988,0.988
+v1.3,2026-06-13 15:24,RandomForestClassifier,0.988,0.988
+v1.4,2026-06-13 15:28,RandomForestClassifier,0.988,0.988
+v1.5,2026-06-13 15:28,MLPClassifier,0.9593,0.9591
+v1.6,2026-06-13 05:33,RandomForestClassifier,0.988,0.988
+v1.7,2026-06-13 05:33,MLPClassifier,0.9593,0.9591
+v1.8,2026-06-13 21:15,RandomForestClassifier,0.988,0.988
+v1.9,2026-06-13 21:15,MLPClassifier,0.9593,0.9591

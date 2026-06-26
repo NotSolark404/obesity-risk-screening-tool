@@ -1,0 +1,79 @@
+stages:
+  preprocess:
+    cmd: python -m src.features.preprocess
+    deps:
+      - src/features/preprocess.py
+      - src/features/engineer.py
+      - src/data/ingest.py
+      - src/config.py
+      - data/raw/ObesityDataSet_raw_and_data_sinthetic.csv
+    params:
+      - params.yaml:
+          - data.test_size
+          - data.random_state
+    outs:
+      - data/processed/train_preprocessed.csv
+      - data/processed/test_preprocessed.csv
+      - data/reference/training_reference.csv
+      - artifacts/models/pipeline.pkl
+      - artifacts/preprocessing/feature_columns.json
+
+  train:
+    cmd: python -m src.models.train
+    deps:
+      - src/models/train.py
+      - src/config.py
+      - data/processed/train_preprocessed.csv
+    params:
+      - params.yaml:
+          - model.n_estimators
+          - model.max_depth
+          - model.min_samples_split
+          - model.min_samples_leaf
+          - data.random_state
+    outs:
+      - artifacts/models/model.pkl
+
+  evaluate:
+    cmd: python -m src.models.evaluate
+    deps:
+      - src/models/evaluate.py
+      - src/config.py
+      - artifacts/models/model.pkl
+      - data/processed/test_preprocessed.csv
+    params:
+      - params.yaml:
+          - model.performance_threshold
+    metrics:
+      - artifacts/metrics/evaluation_metrics.json:
+          cache: false
+
+  train_mlp:
+    cmd: python -m src.models.train_mlp
+    deps:
+      - src/models/train_mlp.py
+      - src/config.py
+      - data/processed/train_preprocessed.csv
+    params:
+      - params.yaml:
+          - mlp.hidden_layer_sizes
+          - mlp.activation
+          - mlp.max_iter
+          - mlp.random_state
+          - mlp.learning_rate_init
+    outs:
+      - artifacts/models/model_mlp.pkl
+
+  evaluate_mlp:
+    cmd: python -m src.models.evaluate_mlp
+    deps:
+      - src/models/evaluate_mlp.py
+      - src/config.py
+      - artifacts/models/model_mlp.pkl
+      - data/processed/test_preprocessed.csv
+    params:
+      - params.yaml:
+          - mlp.performance_threshold
+    metrics:
+      - artifacts/metrics/evaluation_metrics_mlp.json:
+          cache: false

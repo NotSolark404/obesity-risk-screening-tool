@@ -1,0 +1,32 @@
+# Core ML
+scikit-learn
+pandas
+numpy
+scipy
+
+# Serialisation
+joblib
+
+# App
+streamlit
+
+# MLOps
+dvc
+# dvc-gdrive       # only if using Google Drive as DVC remote
+# dvc-s3           # only if using S3
+
+# CI / testing
+flake8
+pytest
+
+# Monitoring
+# evidently==0.4.30           # optional, not used yet
+
+# Testing
+pytest
+pytest-timeout
+pytest-order
+
+# Lint and format
+ruff
+black
