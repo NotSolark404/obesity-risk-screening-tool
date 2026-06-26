@@ -46,7 +46,7 @@ The diagram below shows the full MLOps system across three layers — data, mode
 
 The DVC pipeline diagram shows how `dvc.yaml` orchestrates execution across the five stages, the data and artifact dependencies between them, and the role of `params.yaml` as the central configuration source.
 
-![DVC Pipeline](docs/dvc_pipeline_sequences_drawio.png)
+![DVC Pipeline](docs/dvc_pipeline_sequences.png)
 
 ---
 
