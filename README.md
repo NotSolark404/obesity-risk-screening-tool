@@ -1,6 +1,6 @@
 # Obesity Risk Screening Tool
 
-A machine learning pipeline for classifying obesity risk levels from lifestyle and anthropometric features. Built on the UCI Obesity dataset, the project covers the full ML lifecycle — from raw data ingestion through preprocessing, model training, evaluation, monitoring, and a deployed Streamlit web application — with MLOps practices enforced via DVC and GitHub Actions.
+A machine learning pipeline for classifying obesity risk levels from lifestyle and anthropometric features. The project covers the full ML lifecycle — from raw data ingestion through preprocessing, model training, evaluation, monitoring, and a deployed Streamlit web application — with MLOps practices enforced via DVC and GitHub Actions.
 
 ---
 
