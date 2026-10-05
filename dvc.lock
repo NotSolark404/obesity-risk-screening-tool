@@ -129,14 +129,14 @@ stages:
     outs:
     - path: artifacts/models/model_mlp.pkl
       hash: md5
-      md5: 546e7a26c9e19472b8e8d378d629d45d
+      md5: 7cf3fca32e998b982d706fdffe5b890c
       size: 396573
   evaluate_mlp:
     cmd: python -m src.models.evaluate_mlp
     deps:
     - path: artifacts/models/model_mlp.pkl
       hash: md5
-      md5: 546e7a26c9e19472b8e8d378d629d45d
+      md5: 7cf3fca32e998b982d706fdffe5b890c
       size: 396573
     - path: data/processed/test_preprocessed.csv
       hash: md5
